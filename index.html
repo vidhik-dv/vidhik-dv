@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thunga Vidhik Sheelanand | ASIC / VLSI Design Verification Engineer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        silicon: {
+                            950: '#070a12',
+                            900: '#0b0f19',
+                            800: '#111827',
+                            700: '#1f2937',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Silicon Wafer / Circuit Grid Background */
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .bg-circuit-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
+        }
+        /* Waveform animation */
+        @keyframes pulse-signal {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .signal-active {
+            animation: pulse-signal 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+        .uvm-node {
+            transition: all 0.25s ease;
+        }
+        .uvm-node:hover {
+            transform: translateY(-2px);
+        }
+        .uvm-node.active-node {
+            border-color: #10b981 !important;
+            background-color: rgba(16, 185, 129, 0.14) !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-circuit-grid antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Top Status Banner (Verification Engineer Telemetry) -->
+    <div class="bg-silicon-950/90 border-b border-slate-800/80 text-xs font-mono py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>
+                    STATUS: OPEN TO ASIC/VLSI DV ROLES
+                </span>
+                <span class="hidden sm:inline text-slate-400">LOC: Hyderabad, India (Ready to Relocate)</span>
+            </div>
+            <div class="flex items-center space-x-4 text-slate-400">
+                <span>VFUID: <strong class="text-cyan-400">VT6803</strong></span>
+                <span class="hidden md:inline">|</span>
+                <span class="hidden md:inline text-emerald-400">UVM_INFO: 0 Fatal, 0 Errors</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-silicon-900/85 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/40 flex items-center justify-center font-mono font-bold text-emerald-400 group-hover:border-emerald-400 transition">
+                    TVS
+                </div>
+                <div>
+                    <span class="font-bold text-white tracking-tight block leading-none">Vidhik Sheelanand</span>
+                    <span class="text-[11px] font-mono text-cyan-400 tracking-wider">VLSI_DV_ENGINEER</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-slate-300">
+                <a href="#about" class="px-3 py-2 rounded-lg hover:bg-slate-800/60 hover:text-emerald-400 transition">About</a>
+                <a href="#skills" class="px-3 py-2 rounded-lg hover:bg-slate-800/60 hover:text-emerald-400 transition">Technical Arsenal</a>
+                <a href="#projects" class="px-3 py-2 rounded-lg hover:bg-slate-800/60 hover:text-emerald-400 transition">Verification Projects</a>
+                <a href="#uvm-arch" class="px-3 py-2 rounded-lg hover:bg-slate-800/60 hover:text-cyan-400 transition flex items-center gap-1">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i> Interactive UVM TB
+                </a>
+                <a href="#credentials" class="px-3 py-2 rounded-lg hover:bg-slate-800/60 hover:text-emerald-400 transition">Credentials</a>
+                <a href="#contact" class="ml-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold transition shadow-lg shadow-emerald-500/20">
+                    Hire / Contact
+                </a>
+            </nav>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" aria-label="Toggle Menu" class="md:hidden p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-white border border-slate-700">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-silicon-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2">
+            <a href="#about" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300">About</a>
+            <a href="#skills" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300">Technical Arsenal</a>
+            <a href="#projects" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300">Verification Projects</a>
+            <a href="#uvm-arch" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-cyan-400 font-medium">Interactive UVM Architecture</a>
+            <a href="#credentials" class="block px-3 py-2 rounded-lg hover:bg-slate-800 text-slate-300">Experience & Certifications</a>
+            <a href="#contact" class="block px-3 py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-semibold text-center">Contact Vidhik</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- HERO SECTION -->
+        <section id="about" class="py-12 md:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <!-- Left Column: Intro & CTAs -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+                    <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                    <span>SystemVerilog • UVM • SVA • AMBA AXI4 / AHB / APB</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                    Thunga Vidhik <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Sheelanand</span>
+                </h1>
+
+                <h2 class="text-xl sm:text-2xl font-semibold text-slate-300 flex flex-wrap items-center gap-2">
+                    <span>ASIC / VLSI Design Verification Engineer</span>
+                    <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Coverage-Driven DV</span>
+                </h2>
+
+                <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-2xl">
+                    Detail-oriented Design Verification Engineer specializing in building reusable, modular <strong class="text-slate-200">UVM testbench environments</strong>, constrained-random verification, <strong class="text-slate-200">SystemVerilog Assertions (SVA)</strong>, and functional coverage closure for complex <strong class="text-cyan-400">AMBA (AXI4, AHB, APB)</strong> and high-speed <strong class="text-cyan-400">10G Ethernet MAC</strong> architectures. Combining certified VLSI DV training with 2 years of zero-defect analytical compliance auditing.
+                </p>
+
+                <!-- Key Metrics Bar -->
+                <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-2 max-w-xl">
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">100%</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Functional & Code Coverage Target</div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-bold font-mono text-cyan-400">4+</div>
+                        <div class="text-xs text-slate-400 mt-0.5">End-to-End VIPs & Bus Bridges</div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-bold font-mono text-amber-400">SVA</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Concurrent Protocol Checkers</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                    <a href="#projects" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-emerald-500/20">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        View Verification Projects
+                    </a>
+                    <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 flex items-center gap-2 transition">
+                        <i data-lucide="github" class="w-4 h-4 text-cyan-400"></i>
+                        GitHub Profile
+                    </a>
+                    <button onclick="openResumeModal()" class="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-sm border border-cyan-500/40 flex items-center gap-2 transition">
+                        <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
+                        Download Resume
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Live QuestaSim / UVM Simulation Terminal -->
+            <div class="lg:col-span-5">
+                <div class="rounded-2xl bg-silicon-950 border border-slate-800 shadow-2xl overflow-hidden glow-cyan">
+                    <!-- Terminal Header -->
+                    <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                            <span class="ml-2 text-xs font-mono text-slate-400">questasim_run.log — +UVM_TESTNAME=axi4_ooo_burst_test</span>
+                        </div>
+                        <button id="rerun-sim-btn" class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 transition flex items-center gap-1">
+                            <i data-lucide="play" class="w-3 h-3"></i> Re-run Sim
+                        </button>
+                    </div>
+
+                    <!-- Digital Waveform Strip -->
+                    <div class="bg-slate-950/90 px-4 py-2.5 border-b border-slate-800/80 font-mono text-[11px]">
+                        <div class="flex items-center justify-between text-slate-500 mb-1">
+                            <span>ACLK (250MHz)</span>
+                            <span class="text-emerald-400">AWVALID &amp; AWREADY |-> ##[1:4] WVALID</span>
+                        </div>
+                        <svg class="w-full h-8 stroke-emerald-400 fill-none" viewBox="0 0 400 30">
+                            <!-- Clock Wave -->
+                            <path d="M 0 22 L 15 22 L 15 6 L 30 6 L 30 22 L 45 22 L 45 6 L 60 6 L 60 22 L 75 22 L 75 6 L 90 6 L 90 22 L 105 22 L 105 6 L 120 6 L 120 22 L 135 22 L 135 6 L 150 6 L 150 22 L 165 22 L 165 6 L 180 6 L 180 22 L 195 22 L 195 6 L 210 6 L 210 22 L 225 22 L 225 6 L 240 6 L 240 22 L 255 22 L 255 6 L 270 6 L 270 22 L 285 22 L 285 6 L 300 6 L 300 22 L 315 22 L 315 6 L 330 6 L 330 22 L 345 22 L 345 6 L 360 6 L 360 22 L 375 22 L 375 6 L 390 6 L 390 22" stroke-width="1.5" class="signal-active"/>
+                        </svg>
+                    </div>
+
+                    <!-- Animated UVM Log Output -->
+                    <div id="uvm-terminal-body" class="p-4 font-mono text-xs space-y-2 h-72 overflow-y-auto bg-silicon-950/90">
+                        <!-- Dynamically populated by JS -->
+                    </div>
+
+                    <!-- Terminal Footer Status -->
+                    <div class="bg-slate-900/90 px-4 py-2.5 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
+                        <span class="text-emerald-400 flex items-center gap-1.5">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            TEST PASSED: 100.0% Cov
+                        </span>
+                        <span class="text-slate-400">SVA Assertions: 0 Errors</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TECHNICAL ARSENAL (SKILLS MATRIX) -->
+        <section id="skills" class="py-16 border-t border-slate-800/80">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <div class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// 01. TECHNICAL ARSENAL</div>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Verification Skills Matrix</h2>
+                </div>
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-2" id="skill-filters">
+                    <button data-filter="all" class="skill-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-emerald-500 text-slate-950 transition">ALL_MODULES</button>
+                    <button data-filter="hdl" class="skill-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">HDL_&_HVL</button>
+                    <button data-filter="methodology" class="skill-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">METHODOLOGIES</button>
+                    <button data-filter="protocols" class="skill-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">AMBA_&_PROTOCOLS</button>
+                    <button data-filter="eda" class="skill-tab px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">EDA_&_TOOLS</button>
+                </div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="skills-grid">
+                <!-- Card 1: HDLs & HVL -->
+                <div data-category="hdl" class="skill-card p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-emerald-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                <i data-lucide="code-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">HDLs &amp; Hardware Verification</h3>
+                                <p class="text-xs font-mono text-slate-400">RTL Design &amp; Object-Oriented Verification</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CORE</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">SystemVerilog (OOP, Constrained-Random, Mailboxes, Semaphores)</span>
+                                <span class="text-emerald-400">95%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">SystemVerilog Assertions (SVA - Immediate &amp; Concurrent)</span>
+                                <span class="text-emerald-400">92%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">Verilog HDL (Synthesizable RTL, FSMs, Timing &amp; Race Resolution)</span>
+                                <span class="text-cyan-400">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-cyan-400 h-full rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Verification Methodologies -->
+                <div data-category="methodology" class="skill-card p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Verification Methodologies</h3>
+                                <p class="text-xs font-mono text-slate-400">Reusable Testbenches &amp; Sign-Off</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">UVM 1.2</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">UVM (Factory, Phases, TLM Ports/FIFOs, Sequences, RAL)</span>
+                                <span class="text-emerald-400">94%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-full rounded-full" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">Coverage-Driven Verification (Covergroups, Cross, Bins)</span>
+                                <span class="text-emerald-400">95%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-cyan-400 to-emerald-400 h-full rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-1">
+                                <span class="text-slate-200">Assertion-Based Verification (ABV) &amp; Verification Planning</span>
+                                <span class="text-cyan-400">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-cyan-400 h-full rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Bus Protocols & High-Speed Interfaces -->
+                <div data-category="protocols" class="skill-card p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-emerald-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                                <i data-lucide="network" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Bus Protocols &amp; Interfaces</h3>
+                                <p class="text-xs font-mono text-slate-400">ARM AMBA Suite &amp; Networking</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">AMBA SPEC</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-emerald-500/30 text-xs font-mono text-emerald-300">AMBA AXI4 / AXI4-Lite</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-cyan-500/30 text-xs font-mono text-cyan-300">AMBA AHB-Lite</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-emerald-500/30 text-xs font-mono text-emerald-300">AMBA APB3 / APB4</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-cyan-500/30 text-xs font-mono text-cyan-300">10G Ethernet MAC (XGMII)</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300">UART / SPI / I2C</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300">Sync/Async FIFOs</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Deep command over AXI 5-channel handshakes (`VALID`/`READY`), out-of-order ID tags, burst types (`FIXED`, `INCR`, `WRAP`), AHB pipelined phases (`HREADY`, `HTRANS`), and APB peripheral state machines.
+                    </p>
+                </div>
+
+                <!-- Card 4: EDA Tools & Engineering Workflow -->
+                <div data-category="eda" class="skill-card p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+                                <i data-lucide="wrench" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">EDA Simulators &amp; Automation</h3>
+                                <p class="text-xs font-mono text-slate-400">Simulation, Waveform Debug &amp; Regression</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">TOOLFLOW</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs font-mono">
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Mentor QuestaSim
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> ModelSim
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Git &amp; GitHub
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span> GNU Make / Scripts
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Linux / Bash
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-800/90 border border-slate-700 flex items-center gap-2 text-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span> UCDB Cov Merge
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: FEATURED VERIFICATION PROJECTS -->
+        <section id="projects" class="py-16 border-t border-slate-800/80">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <div class="text-xs font-mono uppercase tracking-widest text-emerald-400 mb-2">// 02. SILICON VERIFICATION PORTFOLIO</div>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Featured UVM &amp; Protocol Projects</h2>
+                </div>
+                <p class="text-sm text-slate-400 max-w-md">
+                    Click <span class="text-cyan-400 font-mono">"Inspect Testbench &amp; Metrics"</span> on any project to examine the UVM topology, SVA assertions, and functional coverage breakdown.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+                <!-- Project 1: AMBA AXI4 -->
+                <article class="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition flex flex-col justify-between p-6 shadow-xl">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                FUNC COV: 100.0% | SVA: PASS
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">SystemVerilog • UVM • QuestaSim</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                            AMBA AXI4 Interconnect &amp; Memory Controller UVM Verification
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                            Architected a complete UVM verification environment for an AMBA AXI4 Slave Memory Controller supporting all 5 independent channels (<code class="text-cyan-300">AW, W, B, AR, R</code>), out-of-order transaction completion, unaligned transfers, and <code class="text-cyan-300">FIXED/INCR/WRAP</code> bursts up to 256 beats.
+                        </p>
+
+                        <!-- Key Verification Highlights -->
+                        <ul class="space-y-2 text-xs text-slate-300 font-mono mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>Associative-array Scoreboard tracking out-of-order `AWID`/`ARID` transactions &amp; byte-lane `WSTRB` masking.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>35+ Concurrent SVA assertions verifying `VALID`/`READY` dependency &amp; 4KB boundary crossing protection.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>Cross-coverage closure between `AWSIZE`, `AWBURST`, `AWLEN`, and backpressure wait states.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openProjectModal('axi4')" class="px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="Cpu" class="w-4 h-4"></i> Inspect Testbench &amp; Metrics
+                        </button>
+                        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 transition">
+                            <i data-lucide="git-branch" class="w-4 h-4"></i> View Repo Structure
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 2: AMBA AHB-to-APB Bridge -->
+                <article class="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 transition flex flex-col justify-between p-6 shadow-xl">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                                FUNC COV: 98.6% | CODE COV: 100%
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">UVM Dual-Agent • RAL • SVA</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                            AMBA AHB-to-APB Bridge Design &amp; UVM Verification
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                            Developed a dual-agent UVM testbench (Active AHB Master Agent + Reactive APB Slave Agent) to verify high-frequency pipelined AHB burst transfers translating seamlessly into two-cycle APB peripheral accesses across clock domains.
+                        </p>
+
+                        <ul class="space-y-2 text-xs text-slate-300 font-mono mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>Verified pipelined `HTRANS` (`NONSEQ`, `SEQ`, `BUSY`, `IDLE`) &amp; `HREADYOUT` stall insertion when APB is busy.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>End-to-end data integrity verification across 4 APB slave address decode slaves (`PSELx`).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>Error response propagation (`PSLVERR` -> two-cycle `HRESP=ERROR`) verified via directed &amp; random sequences.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openProjectModal('ahb_apb')" class="px-4 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="Cpu" class="w-4 h-4"></i> Inspect Testbench &amp; Metrics
+                        </button>
+                        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 transition">
+                            <i data-lucide="git-branch" class="w-4 h-4"></i> View Repo Structure
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 3: 10G Ethernet MAC Loopback -->
+                <article class="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition flex flex-col justify-between p-6 shadow-xl">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                FUNC COV: 100.0% | CRC CHECK: PASS
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">10GbE XGMII • UVM • SVA</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                            10G Ethernet MAC UVM Loopback &amp; XGMII Verification
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                            Built a modular UVM verification environment for a 10-Gigabit Ethernet MAC core, validating TX/RX FIFO buffering, preamble/SFD insertion, IEEE 802.3 frame encapsulation, CRC-32 generation, and XGMII PHY loopback.
+                        </p>
+
+                        <ul class="space-y-2 text-xs text-slate-300 font-mono mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>Constrained-random Ethernet packet generator (runt, standard 64B–1518B, and jumbo frames).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>Custom UVM Subscriber &amp; Scoreboard comparing transmitted payload vs. received XGMII lanes.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>SVA properties guarding Inter-Packet Gap (IPG) timing and FIFO overflow/underflow flags.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openProjectModal('eth10g')" class="px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="Cpu" class="w-4 h-4"></i> Inspect Testbench &amp; Metrics
+                        </button>
+                        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 transition">
+                            <i data-lucide="git-branch" class="w-4 h-4"></i> View Repo Structure
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 4: AMBA APB Protocol VIP -->
+                <article class="rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 transition flex flex-col justify-between p-6 shadow-xl">
+                    <div>
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                                FUNC COV: 100.0% | FSM: 100%
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">AMBA APB4 VIP • UVM • Assertions</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">
+                            AMBA APB4 Master-Slave Verification IP (VIP)
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+                            Designed a plug-and-play UVM Verification IP for the AMBA APB4 protocol supporting `IDLE`, `SETUP`, and `ACCESS` operating states, variable `PREADY` wait-state injection, `PSTRB` sparse write strobes, and `PSLVERR` error testing.
+                        </p>
+
+                        <ul class="space-y-2 text-xs text-slate-300 font-mono mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>Complete SVA suite verifying `PSEL` -> `PENABLE` 1-cycle setup-to-access transition &amp; signal stability.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>Directed &amp; constrained-random sequences for back-to-back Write-Read-Write register checks.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                <span>100% FSM state, transition, and toggle coverage signed off in Mentor QuestaSim.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                        <button onclick="openProjectModal('apb')" class="px-4 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-semibold flex items-center gap-2 transition">
+                            <i data-lucide="Cpu" class="w-4 h-4"></i> Inspect Testbench &amp; Metrics
+                        </button>
+                        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 transition">
+                            <i data-lucide="git-branch" class="w-4 h-4"></i> View Repo Structure
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- SECTION 4: INTERACTIVE UVM TESTBENCH ARCHITECTURE VIEWER -->
+        <section id="uvm-arch" class="py-16 border-t border-slate-800/80">
+            <div class="mb-8">
+                <div class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-2">// 03. INTERACTIVE UVM TOPOLOGY EXPLORER</div>
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Click Any UVM Component to Inspect Implementation</h2>
+                    <span class="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                        <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i> Interactive Architecture Diagram
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left 7 Cols: Interactive Visual Block Diagram -->
+                <div class="lg:col-span-7 p-5 sm:p-6 rounded-2xl bg-silicon-950 border border-slate-800 shadow-2xl">
+                    <div class="text-xs font-mono text-slate-400 mb-3 flex items-center justify-between">
+                        <span>uvm_test_top (axi4_base_test)</span>
+                        <span class="text-cyan-400">TLM Analysis Ports &amp; Virtual Interface</span>
+                    </div>
+
+                    <!-- uvm_env container -->
+                    <div class="p-4 rounded-xl bg-slate-900/90 border border-cyan-500/30 space-y-4">
+                        <div class="text-xs font-mono text-cyan-400 font-semibold">uvm_env (axi4_env)</div>
+
+                        <!-- Top Row inside Env: Scoreboard & Coverage Subscriber -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <button onclick="selectUvmNode('scoreboard')" id="node-scoreboard" class="uvm-node active-node text-left p-3.5 rounded-xl bg-slate-800/90 border-2 border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs font-bold text-emerald-400">uvm_scoreboard</span>
+                                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">TLM FIFO</span>
+                                </div>
+                                <p class="text-xs text-slate-300 mt-1">Out-of-Order Associative Array Ref Model</p>
+                            </button>
+
+                            <button onclick="selectUvmNode('coverage')" id="node-coverage" class="uvm-node text-left p-3.5 rounded-xl bg-slate-800/90 border-2 border-slate-700">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs font-bold text-cyan-400">uvm_subscriber</span>
+                                    <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300">100% Cov</span>
+                                </div>
+                                <p class="text-xs text-slate-300 mt-1">Functional Covergroups &amp; Cross Bins</p>
+                            </button>
+                        </div>
+
+                        <!-- TLM Connection Arrow Indicator -->
+                        <div class="flex items-center justify-center text-[11px] font-mono text-slate-400 py-1">
+                            <span>▲ item_collected_port.connect(analysis_export) ▲</span>
+                        </div>
+
+                        <!-- uvm_agent container -->
+                        <div class="p-3.5 rounded-xl bg-silicon-950/90 border border-slate-700 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono text-emerald-400 font-semibold">uvm_agent (UVM_ACTIVE)</span>
+                                <button onclick="selectUvmNode('sequence')" id="node-sequence" class="uvm-node text-[11px] font-mono px-2.5 py-1 rounded bg-amber-500/15 text-amber-300 border border-amber-500/40">
+                                    uvm_sequence_item / sequences
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button onclick="selectUvmNode('sequencer')" id="node-sequencer" class="uvm-node text-left p-3 rounded-lg bg-slate-900 border-2 border-slate-700">
+                                    <div class="font-mono text-xs font-bold text-white">uvm_sequencer</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Arbitrates stimulus items</div>
+                                </button>
+
+                                <button onclick="selectUvmNode('driver')" id="node-driver" class="uvm-node text-left p-3 rounded-lg bg-slate-900 border-2 border-slate-700">
+                                    <div class="font-mono text-xs font-bold text-emerald-400">uvm_driver</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Drives pin-level handshakes</div>
+                                </button>
+
+                                <button onclick="selectUvmNode('monitor')" id="node-monitor" class="uvm-node text-left p-3 rounded-lg bg-slate-900 border-2 border-slate-700">
+                                    <div class="font-mono text-xs font-bold text-cyan-400">uvm_monitor</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Samples bus &amp; broadcasts</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Virtual Interface + SVA Bar -->
+                        <button onclick="selectUvmNode('vif')" id="node-vif" class="uvm-node w-full text-left p-3.5 rounded-xl bg-gradient-to-r from-cyan-950/60 to-emerald-950/60 border-2 border-cyan-500/40 flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <span class="font-mono text-xs font-bold text-cyan-300">virtual interface (axi4_if) + SVA Checkers</span>
+                                <p class="text-[11px] text-slate-300">Clocking Blocks (`cb_drv`, `cb_mon`), Modports &amp; Concurrent Protocol Assertions</p>
+                            </div>
+                            <span class="text-[10px] font-mono px-2 py-1 rounded bg-cyan-500/20 text-cyan-300">uvm_config_db</span>
+                        </button>
+
+                        <!-- DUT -->
+                        <button onclick="selectUvmNode('dut')" id="node-dut" class="uvm-node w-full text-left p-3.5 rounded-xl bg-slate-950 border-2 border-slate-700 flex items-center justify-between">
+                            <div>
+                                <span class="font-mono text-xs font-bold text-white">DUT: Silicon RTL (AMBA AXI4 / AHB-APB / 10G MAC)</span>
+                                <p class="text-[11px] text-slate-400">Synthesizable Verilog/SystemVerilog RTL Under Verification</p>
+                            </div>
+                            <i data-lucide="cpu" class="w-5 h-5 text-emerald-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right 5 Cols: Live Component Code & Architecture Inspector -->
+                <div class="lg:col-span-5 rounded-2xl bg-slate-900/90 border border-slate-800 overflow-hidden shadow-2xl">
+                    <div class="bg-slate-950 px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span id="uvm-detail-badge" class="text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">uvm_scoreboard</span>
+                            <h3 id="uvm-detail-title" class="text-base font-bold text-white mt-1">Out-of-Order Transaction Scoreboard</h3>
+                        </div>
+                        <i data-lucide="file-code" class="w-5 h-5 text-cyan-400"></i>
+                    </div>
+
+                    <div class="p-5 space-y-4">
+                        <p id="uvm-detail-desc" class="text-sm text-slate-300 leading-relaxed">
+                            Receives write and read transactions from the monitor via `uvm_tlm_analysis_fifo`. Uses an associative array indexed by `AWID` and memory address to verify out-of-order burst data integrity and byte-lane `WSTRB` masking.
+                        </p>
+
+                        <div class="rounded-xl bg-silicon-950 border border-slate-800 p-3.5 overflow-x-auto">
+                            <pre id="uvm-detail-code" class="font-mono text-xs text-emerald-300 leading-relaxed"></pre>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-800/60 border border-slate-700/80 text-xs text-slate-300 flex items-start gap-2.5">
+                            <i data-lucide="award" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                            <span id="uvm-detail-interview"><strong>Recruiter / Interview Highlight:</strong> Demonstrates mastery of TLM analysis FIFOs, associative arrays for sparse 64-bit memory modeling, and decoupled checking.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: CREDENTIALS, EXPERIENCE & EDUCATION -->
+        <section id="credentials" class="py-16 border-t border-slate-800/80">
+            <div class="text-xs font-mono uppercase tracking-widest text-emerald-400 mb-2">// 04. CREDENTIALS &amp; BACKGROUND</div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-10">Certifications, Experience &amp; Education</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Card 1: VLSI Certifications -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-emerald-500/30 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">CERTIFIED DV PRO</span>
+                            <i data-lucide="award" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Design Verification Professional Certification</h3>
+                        <p class="text-sm font-mono text-cyan-400 mb-4">VLSI FIRST • VFUID: VT6803</p>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                            Intensive hands-on industry training in RTL Design, Digital Logic, Verilog, SystemVerilog OOP, Constrained-Random Verification, SVA, and Universal Verification Methodology (UVM) across AMBA and networking protocols.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800">
+                        <div class="text-xs font-mono text-slate-300 font-semibold">+ NPTEL Certification: Digital IC Design</div>
+                        <div class="text-xs text-slate-400 mt-0.5">CMOS timing, static timing fundamentals, and digital architecture.</div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Professional Experience -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">2 YEARS EXPERIENCE</span>
+                            <i data-lucide="briefcase" class="w-5 h-5 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Risk &amp; Compliance Officer</h3>
+                        <p class="text-sm font-mono text-emerald-400 mb-4">Teleperformance (Alphabet Account)</p>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                            Executed high-precision compliance verification, root-cause failure analysis, and policy specification auditing for Alphabet workflows under strict SLA and zero-defect quality benchmarks.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800 text-xs text-slate-300 font-mono">
+                        <span class="text-cyan-400">DV Transferability:</span> Corner-case anomaly detection, specification-to-implementation auditing, and structured bug documentation.
+                    </div>
+                </div>
+
+                <!-- Card 3: Academic Foundation -->
+                <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-slate-800 text-slate-300 border border-slate-700">B.TECH DEGREE</span>
+                            <i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Bachelor of Technology (B.Tech)</h3>
+                        <p class="text-sm font-mono text-cyan-400 mb-4">Electronics &amp; Communication Engineering (ECE)</p>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-4">
+                            Strong academic foundation in Digital System Design, VLSI Design, Microprocessors &amp; Microcontrollers, Computer Architecture, and Signal Processing.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800 text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i> Core Focus: Digital Electronics &amp; ASIC Verification
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: GITHUB ACTIVITY & RECRUITER CONTACT -->
+        <section id="contact" class="py-16 border-t border-slate-800/80">
+            <div class="rounded-3xl bg-gradient-to-br from-slate-900 via-silicon-900 to-slate-950 border border-emerald-500/30 p-6 sm:p-10 lg:p-12 shadow-2xl">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-mono border border-emerald-500/30">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            AVAILABLE FOR IMMEDIATE JOINING
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                            Looking for a Driven VLSI Verification Engineer?
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                            Whether you need an engineer to build UVM agents from scratch, write protocol assertions for AMBA interconnects, or close 100% functional coverage on complex SoCs, I am ready to contribute from Day 1.
+                        </p>
+
+                        <!-- Direct Contact Buttons -->
+                        <div class="flex flex-wrap items-center gap-3 pt-2">
+                            <button onclick="copyEmailToClipboard()" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm flex items-center gap-2 transition shadow-lg shadow-emerald-500/20">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                                <span id="email-btn-text">Copy Email: vidhik.dv@email.com</span>
+                            </button>
+                            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 flex items-center gap-2 transition">
+                                <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400"></i>
+                                LinkedIn
+                            </a>
+                            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 flex items-center gap-2 transition">
+                                <i data-lucide="github" class="w-4 h-4 text-emerald-400"></i>
+                                GitHub Repos
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right 5 Cols: Quick Recruiter Snapshot Card -->
+                    <div class="lg:col-span-5 p-6 rounded-2xl bg-silicon-950/90 border border-slate-800 font-mono text-xs space-y-3">
+                        <div class="text-cyan-400 font-bold border-b border-slate-800 pb-2 flex items-center justify-between">
+                            <span>// CANDIDATE_SIGN_OFF_SUMMARY</span>
+                            <span class="text-emerald-400">READY</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-900">
+                            <span class="text-slate-400">Candidate:</span>
+                            <span class="text-white font-semibold">Thunga Vidhik Sheelanand</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-900">
+                            <span class="text-slate-400">Target Role:</span>
+                            <span class="text-emerald-400">ASIC / SoC Design Verification</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-900">
+                            <span class="text-slate-400">Certification ID:</span>
+                            <span class="text-cyan-400">VLSI FIRST (VFUID: VT6803)</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-900">
+                            <span class="text-slate-400">Primary Stack:</span>
+                            <span class="text-white">SystemVerilog, UVM, SVA, Verilog</span>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-900">
+                            <span class="text-slate-400">Bus Protocols:</span>
+                            <span class="text-emerald-400">AXI4, AHB, APB, 10G MAC</span>
+                        </div>
+                        <div class="flex justify-between py-1">
+                            <span class="text-slate-400">Location:</span>
+                            <span class="text-white">Hyderabad, TS (Open to Relocate)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-8 mt-12 text-center text-xs font-mono text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span>© 2026 Thunga Vidhik Sheelanand • Engineered for Silicon Verification Excellence</span>
+            <span class="text-emerald-400/90">[UVM_INFO] $finish called at 100% Functional Coverage</span>
+        </div>
+    </footer>
+
+    <!-- PROJECT ARCHITECTURE & METRICS MODAL -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-silicon-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="sticky top-0 bg-silicon-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                <div>
+                    <span id="modal-badge" class="text-xs font-mono px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">UVM CASE STUDY</span>
+                    <h3 id="modal-title" class="text-xl font-bold text-white mt-1">Project Title</h3>
+                </div>
+                <button onclick="closeProjectModal()" class="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-5">
+                <p id="modal-summary" class="text-sm text-slate-300 leading-relaxed"></p>
+
+                <!-- Coverage Metrics Grid -->
+                <div class="grid grid-cols-3 gap-3 font-mono text-center">
+                    <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                        <div id="modal-fcov" class="text-xl font-bold text-emerald-400">100.0%</div>
+                        <div class="text-[11px] text-slate-400">Functional Coverage</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                        <div id="modal-ccov" class="text-xl font-bold text-cyan-400">99.4%</div>
+                        <div class="text-[11px] text-slate-400">RTL Code Coverage</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                        <div id="modal-sva" class="text-xl font-bold text-emerald-400">0 Fail</div>
+                        <div class="text-[11px] text-slate-400">SVA Protocol Checks</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-mono uppercase tracking-wider text-cyan-400 mb-2">Key SVA Assertion &amp; Testbench Snippet</h4>
+                    <pre id="modal-code" class="p-4 rounded-xl bg-silicon-950 border border-slate-800 font-mono text-xs text-emerald-300 overflow-x-auto leading-relaxed"></pre>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-mono uppercase tracking-wider text-emerald-400 mb-2">Verification Scenarios Executed</h4>
+                    <ul id="modal-scenarios" class="space-y-1.5 text-xs font-mono text-slate-300"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESUME PREVIEW MODAL -->
+    <div id="resume-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-silicon-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="file-check-2" class="w-5 h-5 text-emerald-400"></i>
+                    <h3 class="text-lg font-bold text-white">ATS-Ready VLSI DV Resume Summary</h3>
+                </div>
+                <button onclick="closeResumeModal()" class="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-4 rounded-xl bg-silicon-950 border border-slate-800 font-mono text-xs text-slate-300 space-y-2">
+                <div class="text-white font-bold text-sm">THUNGA VIDHIK SHEELANAND — VLSI Design Verification Engineer</div>
+                <div class="text-cyan-400">Hyderabad, India | VFUID: VT6803 | B.Tech ECE</div>
+                <p class="pt-2 text-slate-400">
+                    Tip: Link your final PDF resume (`Thunga_Vidhik_Sheelanand_VLSI_DV_Resume.pdf`) in your GitHub Pages repository root so recruiters can download it with one click.
+                </p>
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="closeResumeModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-mono">Close</button>
+                <a href="#contact" onclick="closeResumeModal()" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs font-mono">Request Full PDF via Email</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 rounded-xl bg-emerald-500 text-slate-950 font-mono text-xs font-bold shadow-xl flex items-center gap-2">
+        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+        <span id="toast-msg">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Live Animated UVM Simulation Log
+        const uvmLogs = [
+            { time: "0ns", type: "UVM_INFO", color: "text-cyan-400", msg: "uvm_root: Starting test axi4_ooo_burst_test..." },
+            { time: "20ns", type: "UVM_INFO", color: "text-slate-300", msg: "[AXI4_DRV] Reset de-asserted (ARESETn=1). Driving INCR Burst AWID=0x3, AWLEN=7, AWSIZE=3" },
+            { time: "140ns", type: "UVM_INFO", color: "text-emerald-400", msg: "[SVA_PASS] prop_awvalid_awready_handshake verified on channel AW" },
+            { time: "380ns", type: "UVM_INFO", color: "text-slate-300", msg: "[AXI4_MON] Captured Out-of-Order Read Response RID=0x3 (Beat 8/8, RRESP=OKAY)" },
+            { time: "690ns", type: "UVM_INFO", color: "text-emerald-400", msg: "[AXI4_SCB] Scoreboard Data Match! Exp=64'hCAFE_BABE_DEAD_BEEF | Act=64'hCAFE_BABE_DEAD_BEEF" },
+            { time: "950ns", type: "UVM_INFO", color: "text-cyan-400", msg: "[COV_SUB] Cross-coverage axi4_burst_x_wstrb reached 100.0% goal" },
+            { time: "1250ns", type: "UVM_INFO", color: "text-emerald-400 font-bold", msg: "[UVM_INFO] @ 1250ns: Scoreboard Match! Functional Coverage: 100.0% | SVA Assertions: 0 Errors" }
+        ];
+
+        const terminalBody = document.getElementById('uvm-terminal-body');
+        let logTimer = null;
+
+        function runSimulationAnimation() {
+            if (logTimer) clearInterval(logTimer);
+            terminalBody.innerHTML = '';
+            let idx = 0;
+            logTimer = setInterval(() => {
+                if (idx >= uvmLogs.length) {
+                    clearInterval(logTimer);
+                    return;
+                }
+                const item = uvmLogs[idx];
+                const line = document.createElement('div');
+                line.className = `${item.color} leading-relaxed`;
+                line.innerHTML = `<span class="text-slate-500">@${item.time}</span> <span class="px-1 rounded bg-slate-800 text-[10px]">${item.type}</span> ${item.msg}`;
+                terminalBody.appendChild(line);
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                idx++;
+            }, 380);
+        }
+
+        document.getElementById('rerun-sim-btn').addEventListener('click', runSimulationAnimation);
+
+        // Filterable Skills Matrix
+        const filterButtons = document.querySelectorAll('.skill-tab');
+        const skillCards = document.querySelectorAll('.skill-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-emerald-500', 'text-slate-950');
+                    b.classList.add('bg-slate-800', 'text-slate-300');
+                });
+                btn.classList.remove('bg-slate-800', 'text-slate-300');
+                btn.classList.add('bg-emerald-500', 'text-slate-950');
+
+                skillCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Interactive UVM Testbench Component Data
+        const uvmComponentData = {
+            scoreboard: {
+                badge: "uvm_scoreboard",
+                title: "Out-of-Order Transaction Scoreboard",
+                desc: "Receives write and read transactions from the monitor via uvm_tlm_analysis_fifo. Uses an associative array indexed by AWID and memory address to verify out-of-order burst data integrity and byte-lane WSTRB masking.",
+                code: `class axi4_scoreboard extends uvm_scoreboard;
+  \`uvm_component_utils(axi4_scoreboard)
+  bit [63:0] ref_mem [bit [31:0]]; // Sparse Associative Array
+
+  virtual function void check_read(axi4_seq_item tr);
+    if (ref_mem.exists(tr.addr)) begin
+      if (ref_mem[tr.addr] === tr.rdata)
+        \`uvm_info("SCB_PASS", $sformatf("Match @0x%0h", tr.addr), UVM_LOW)
+      else
+        \`uvm_error("SCB_FAIL", "Data Mismatch Detected!")
+    end
+  endfunction
+endclass`,
+                interview: "Recruiter / Interview Highlight: Demonstrates mastery of TLM analysis FIFOs, associative arrays for sparse 64-bit memory modeling, and self-checking testbenches."
+            },
+            coverage: {
+                badge: "uvm_subscriber",
+                title: "Functional Coverage Subscriber (100% Closure)",
+                desc: "Samples transaction objects broadcasted via the monitor's analysis port. Tracks coverpoints for burst type, burst length, transfer size, and cross-coverage with wait states and error responses.",
+                code: `covergroup axi4_cg with function sample(axi4_seq_item item);
+  cp_burst: coverpoint item.awburst {
+    bins fixed = {2'b00};
+    bins incr  = {2'b01};
+    bins wrap  = {2'b10};
+  }
+  cp_len: coverpoint item.awlen {
+    bins single = {0};
+    bins burst  = {[1:15]};
+  }
+  cx_burst_len: cross cp_burst, cp_len;
+endgroup`,
+                interview: "Recruiter / Interview Highlight: Proves ability to translate Verification Plans into measurable covergroups, illegal bins, and cross-coverage closure."
+            },
+            sequence: {
+                badge: "uvm_sequence",
+                title: "Constrained-Random Sequence & Sequence Item",
+                desc: "Generates legal and corner-case protocol traffic using SystemVerilog constraints, including 4KB boundary guards, wrap-burst alignment rules, and error-injection scenarios.",
+                code: `class axi4_seq_item extends uvm_sequence_item;
+  rand bit [31:0] awaddr;
+  rand bit [7:0]  awlen;
+  rand bit [1:0]  awburst;
+
+  // AXI4 Spec: Burst must not cross 4KB boundary
+  constraint c_4k_boundary {
+    (awaddr % 4096) + ((awlen + 1) << awsize) <= 4096;
+  }
+  constraint c_wrap_len {
+    (awburst == 2'b10) -> awlen inside {1, 3, 7, 15};
+  }
+endclass`,
+                interview: "Recruiter / Interview Highlight: Shows deep familiarity with ARM AMBA specifications encoded directly into solver constraints."
+            },
+            sequencer: {
+                badge: "uvm_sequencer",
+                title: "Transaction Arbitrator & Virtual Sequencer",
+                desc: "Controls stimulus flow between concurrent sequences (e.g., interleaved write/read bursts and reset-on-the-fly sequences) and feeds items to the driver via TLM seq_item_port.",
+                code: `// Starting parallel Write and Read sequences in Test run_phase
+fork
+  wr_burst_seq.start(env.axi_agt.sqr);
+  rd_burst_seq.start(env.axi_agt.sqr);
+join`,
+                interview: "Recruiter / Interview Highlight: Illustrates multi-channel stimulus coordination using fork-join and sequence arbitration."
+            },
+            driver: {
+                badge: "uvm_driver",
+                title: "Pin-Level Protocol Driver with Clocking Blocks",
+                desc: "Pulls transactions via seq_item_port.get_next_item(req) and drives cycle-accurate AMBA handshakes onto the virtual interface using non-blocking clocking block assignments.",
+                code: `task drive_write_addr(axi4_seq_item req);
+  @(vif.cb_drv);
+  vif.cb_drv.awvalid <= 1'b1;
+  vif.cb_drv.awaddr  <= req.awaddr;
+  vif.cb_drv.awlen   <= req.awlen;
+  do @(vif.cb_drv);
+  while (!vif.cb_drv.awready);
+  vif.cb_drv.awvalid <= 1'b0;
+endtask`,
+                interview: "Recruiter / Interview Highlight: Eliminates Verilog race conditions by strictly separating driving/sampling edges via interface clocking blocks."
+            },
+            monitor: {
+                badge: "uvm_monitor",
+                title: "Passive Protocol Monitor & TLM Broadcaster",
+                desc: "Passively observes bus handshakes without driving any signals. Reconstructs burst beats into complete transaction objects and broadcasts them via uvm_analysis_port.",
+                code: `forever begin
+  @(vif.cb_mon);
+  if (vif.cb_mon.awvalid && vif.cb_mon.awready) begin
+    axi4_seq_item tr = axi4_seq_item::type_id::create("tr");
+    tr.awaddr = vif.cb_mon.awaddr;
+    item_collected_port.write(tr);
+  end
+end`,
+                interview: "Recruiter / Interview Highlight: Reusable across both active block-level and passive SoC-level integration environments."
+            },
+            vif: {
+                badge: "virtual interface + SVA",
+                title: "SystemVerilog Interface & Concurrent SVA Checkers",
+                desc: "Bridges the static RTL world with dynamic OOP UVM classes via uvm_config_db. Embeds concurrent SystemVerilog Assertions to catch protocol violations at the exact clock cycle.",
+                code: `// SVA: Once AWVALID is asserted, it must remain stable until AWREADY
+property p_awvalid_stable;
+  @(posedge aclk) disable iff (!aresetn)
+  (awvalid && !awready) |=> (awvalid && $stable(awaddr));
+endproperty
+AST_AW_STABLE: assert property (p_awvalid_stable)
+  else \`uvm_error("SVA_ERR", "AWVALID dropped before AWREADY!")`,
+                interview: "Recruiter / Interview Highlight: Combines Assertion-Based Verification (ABV) with UVM reporting for instant waveform pinpointing."
+            },
+            dut: {
+                badge: "DUT (RTL)",
+                title: "Design Under Test (AMBA AXI4 / AHB-APB / 10G MAC)",
+                desc: "Synthesizable Verilog/SystemVerilog RTL modules verified for 100% functional, statement, branch, and FSM state/transition coverage in Mentor QuestaSim.",
+                code: `module tb_top;
+  bit aclk = 0, aresetn = 0;
+  always #2 aclk = ~aclk; // 250 MHz Clock
+
+  axi4_if vif(aclk, aresetn);
+  axi4_memory_ctrl dut (.aclk(aclk), .aresetn(aresetn), .bus(vif));
+
+  initial begin
+    uvm_config_db#(virtual axi4_if)::set(null, "*", "vif", vif);
+    run_test();
+  end
+endmodule`,
+                interview: "Recruiter / Interview Highlight: Complete top-level harness showcasing clean uvm_config_db virtual interface registration."
+            }
+        };
+
+        function selectUvmNode(key) {
+            document.querySelectorAll('.uvm-node').forEach(el => el.classList.remove('active-node'));
+            const activeBtn = document.getElementById('node-' + key);
+            if (activeBtn) activeBtn.classList.add('active-node');
+
+            const data = uvmComponentData[key];
+            document.getElementById('uvm-detail-badge').textContent = data.badge;
+            document.getElementById('uvm-detail-title').textContent = data.title;
+            document.getElementById('uvm-detail-desc').textContent = data.desc;
+            document.getElementById('uvm-detail-code').textContent = data.code;
+            document.getElementById('uvm-detail-interview').innerHTML = `<strong>Recruiter / Interview Highlight:</strong> ${data.interview.replace('Recruiter / Interview Highlight: ', '')}`;
+        }
+
+        // Project Case Study Modal Data
+        const projectDetails = {
+            axi4: {
+                badge: "AMBA AXI4 UVM VIP",
+                title: "AMBA AXI4 Interconnect & Memory Controller UVM Verification",
+                summary: "End-to-end UVM testbench verifying 5 independent AXI4 channels (AW, W, B, AR, R) with out-of-order transaction IDs, variable burst lengths (1 to 256 beats), narrow transfers, and write strobes.",
+                fcov: "100.0%",
+                ccov: "99.4%",
+                sva: "35 Pass / 0 Fail",
+                code: `// SVA: Write Response BVALID must only assert after WLAST handshake
+property p_wlast_to_bvalid;
+  @(posedge aclk) disable iff (!aresetn)
+  (wvalid && wready && wlast) |-> ##[1:$] bvalid;
+endproperty
+assert property (p_wlast_to_bvalid);`,
+                scenarios: [
+                    "✔ Out-of-order Read/Write completion using multiple AWID/ARID tags",
+                    "✔ Narrow & unaligned transfers with sparse WSTRB byte-lane masking",
+                    "✔ FIXED, INCR, and WRAP burst boundary & 4KB partition protection",
+                    "✔ Slave backpressure (AWREADY/WREADY/RREADY wait-state random delays)"
+                ]
+            },
+            ahb_apb: {
+                badge: "AMBA AHB-TO-APB BRIDGE",
+                title: "AMBA AHB-to-APB Bridge Design & UVM Verification",
+                summary: "Dual-agent UVM verification architecture verifying high-speed pipelined AHB-Lite transfers bridging to four low-power APB peripheral slaves with wait states and error signaling.",
+                fcov: "98.6%",
+                ccov: "100.0%",
+                sva: "24 Pass / 0 Fail",
+                code: `// SVA: Two-cycle HRESP=ERROR requirement in AMBA AHB specification
+property p_ahb_two_cycle_error;
+  @(posedge hclk) disable iff (!hresetn)
+  (hresp == 1'b1 && !hreadyout) |=> (hresp == 1'b1 && hreadyout);
+endproperty
+assert property (p_ahb_two_cycle_error);`,
+                scenarios: [
+                    "✔ Single and INCR4/INCR8/WRAP4 pipelined AHB bursts to APB registers",
+                    "✔ HREADYOUT stall insertion during multi-cycle APB SETUP/ACCESS phases",
+                    "✔ Address decoding verification across 4 APB slave peripherals (PSEL0–PSEL3)",
+                    "✔ PSLVERR error injection verifying two-cycle AHB HRESP error sequence"
+                ]
+            },
+            eth10g: {
+                badge: "10G ETHERNET MAC",
+                title: "10G Ethernet MAC UVM Loopback & XGMII Verification",
+                summary: "Modular UVM testbench verifying IEEE 802.3 10GbE frame transmission and reception across an XGMII interface, including FCS/CRC-32 checking and FIFO flow control.",
+                fcov: "100.0%",
+                ccov: "98.9%",
+                sva: "18 Pass / 0 Fail",
+                code: `// SVA: Start of Frame Delimiter (0xFB) must be followed by 7 preamble bytes
+property p_xgmii_preamble_sfd;
+  @(posedge tx_clk) disable iff (!reset_n)
+  (tx_c[0] && tx_d[7:0] == 8'hFB) |-> (tx_d[63:56] == 8'hD5);
+endproperty
+assert property (p_xgmii_preamble_sfd);`,
+                scenarios: [
+                    "✔ Standard (64B–1518B), Runt (<64B), and Jumbo (>1518B) Ethernet payloads",
+                    "✔ Automatic FCS/CRC-32 generation and corrupted-CRC error detection",
+                    "✔ TX/RX asynchronous FIFO full, empty, and backpressure threshold tests",
+                    "✔ Inter-Packet Gap (IPG) minimum idle byte verification on XGMII lanes"
+                ]
+            },
+            apb: {
+                badge: "AMBA APB4 VIP",
+                title: "AMBA APB4 Master-Slave Verification IP (VIP)",
+                summary: "Reusable UVM Verification IP verifying the 3-state APB FSM (IDLE, SETUP, ACCESS), PREADY wait states, PSLVERR error reporting, and PSTRB byte-wise write strobes.",
+                fcov: "100.0%",
+                ccov: "100.0%",
+                sva: "16 Pass / 0 Fail",
+                code: `// SVA: PSEL high in SETUP must transition to PENABLE high in next clock
+property p_apb_setup_to_access;
+  @(posedge pclk) disable iff (!presetn)
+  (psel && !penable) |=> (psel && penable);
+endproperty
+assert property (p_apb_setup_to_access);`,
+                scenarios: [
+                    "✔ Zero-wait-state and multi-wait-state (PREADY=0) read/write transfers",
+                    "✔ Sparse byte-lane writes using 4-bit PSTRB strobe masks",
+                    "✔ Back-to-back Write-followed-by-Read scoreboard data verification",
+                    "✔ Reset-on-the-fly recovery from ACCESS state back to IDLE state"
+                ]
+            }
+        };
+
+        function openProjectModal(projectKey) {
+            const p = projectDetails[projectKey];
+            document.getElementById('modal-badge').textContent = p.badge;
+            document.getElementById('modal-title').textContent = p.title;
+            document.getElementById('modal-summary').textContent = p.summary;
+            document.getElementById('modal-fcov').textContent = p.fcov;
+            document.getElementById('modal-ccov').textContent = p.ccov;
+            document.getElementById('modal-sva').textContent = p.sva;
+            document.getElementById('modal-code').textContent = p.code;
+
+            const ul = document.getElementById('modal-scenarios');
+            ul.innerHTML = '';
+            p.scenarios.forEach(s => {
+                const li = document.createElement('li');
+                li.textContent = s;
+                ul.appendChild(li);
+            });
+
+            document.getElementById('project-modal').classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+
+        function openResumeModal() {
+            document.getElementById('resume-modal').classList.remove('hidden');
+        }
+
+        function closeResumeModal() {
+            document.getElementById('resume-modal').classList.add('hidden');
+        }
+
+        // Copy Email with iframe-safe fallback
+        function copyEmailToClipboard() {
+            const email = "vidhik.dv@email.com";
+            const tempInput = document.createElement("textarea");
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = "Email copied: " + email;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // Initialize page state on load
+        window.onload = function () {
+            runSimulationAnimation();
+            selectUvmNode('scoreboard');
+        };
+    </script>
+</body>
+</html>
